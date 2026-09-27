@@ -99,7 +99,12 @@ fun AppSettingsScreen(preferences: AppPreferences, onBack: () -> Unit) {
                 }
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = stringResource(R.string.sound), fontSize = 16.sp, modifier = Modifier.weight(1f))
+                Text(
+                    text = stringResource(R.string.sound),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.weight(1f)
+                )
                 Switch(
                     checked = preferences.soundEnabled,
                     onCheckedChange = { preferences.soundEnabled = it }
