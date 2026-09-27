@@ -59,9 +59,6 @@ import com.shapakapps.kustclock.engine.PlayerClock
 import com.shapakapps.kustclock.model.TimeControlRepository
 import com.shapakapps.kustclock.storage.AppPreferences
 import com.shapakapps.kustclock.ui.theme.ClockThemeColors
-import com.shapakapps.kustclock.ui.theme.Danger
-import com.shapakapps.kustclock.ui.theme.OnPrimaryDark
-import com.shapakapps.kustclock.ui.theme.TextPrimary
 import com.shapakapps.kustclock.util.formatClockTime
 
 @Composable
@@ -173,16 +170,21 @@ private fun ClockPanel(
     rotated: Boolean,
     modifier: Modifier = Modifier
 ) {
+    val errorColor = MaterialTheme.colorScheme.error
     val finished = phase == ClockPhase.FINISHED
     val lowTime = isActive && clock.remainingMillis < 20_000
     val backgroundColor = when {
         finished && isWinner -> themeColor
-        finished -> Danger
-        isActive && lowTime -> Danger
+        finished -> errorColor
+        isActive && lowTime -> errorColor
         isActive -> themeColor
         else -> MaterialTheme.colorScheme.surfaceVariant
     }
-    val contentColor = if (backgroundColor == themeColor) OnPrimaryDark else TextPrimary
+    val contentColor = when {
+        backgroundColor == themeColor -> MaterialTheme.colorScheme.onPrimary
+        backgroundColor == errorColor -> MaterialTheme.colorScheme.onError
+        else -> MaterialTheme.colorScheme.onSurface
+    }
 
     Box(
         modifier = modifier
@@ -302,20 +304,20 @@ private fun PauseIcon() {
             modifier = Modifier
                 .size(width = 10.dp, height = 28.dp)
                 .clip(RoundedCornerShape(2.dp))
-                .background(TextPrimary)
+                .background(MaterialTheme.colorScheme.onSurface)
         )
         Box(
             modifier = Modifier
                 .size(width = 10.dp, height = 28.dp)
                 .clip(RoundedCornerShape(2.dp))
-                .background(TextPrimary)
+                .background(MaterialTheme.colorScheme.onSurface)
         )
     }
 }
 
 @Composable
 private fun SoundIcon(on: Boolean) {
-    val color = TextPrimary
+    val color = MaterialTheme.colorScheme.onSurface
     Canvas(modifier = Modifier.size(24.dp)) {
         val w = size.width
         val h = size.height

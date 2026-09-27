@@ -50,7 +50,6 @@ import com.shapakapps.kustclock.model.IncrementType
 import com.shapakapps.kustclock.model.Stage
 import com.shapakapps.kustclock.model.TimeControl
 import com.shapakapps.kustclock.model.TimeControlRepository
-import com.shapakapps.kustclock.ui.theme.TextSecondary
 import com.shapakapps.kustclock.util.splitHms
 
 private class StageDraft {
@@ -246,13 +245,13 @@ private fun PlayerEditor(title: String, draft: PlayerDraft) {
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold
         )
-        Text(text = stringResource(R.string.time), fontSize = 13.sp, color = TextSecondary)
+        Text(text = stringResource(R.string.time), fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             NumberField(value = draft.hours, label = stringResource(R.string.hour), modifier = Modifier.weight(1f)) { draft.hours = it }
             NumberField(value = draft.minutes, label = stringResource(R.string.minute), modifier = Modifier.weight(1f)) { draft.minutes = it }
             NumberField(value = draft.seconds, label = stringResource(R.string.second), modifier = Modifier.weight(1f)) { draft.seconds = it }
         }
-        Text(text = stringResource(R.string.increment), fontSize = 13.sp, color = TextSecondary)
+        Text(text = stringResource(R.string.increment), fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             IncrementType.entries.forEach { type ->
                 FilterChip(
@@ -272,7 +271,7 @@ private fun PlayerEditor(title: String, draft: PlayerDraft) {
                 }
             ),
             fontSize = 12.sp,
-            color = TextSecondary
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         if (draft.incrementType != IncrementType.NONE) {
             NumberField(

@@ -16,7 +16,9 @@ Kust Clock is a free and open-source chess clock for Android, designed for real-
 - **Accurate timing** — the engine is based on the system's monotonic clock, so time is kept accurately even if the app is interrupted. The clock pauses automatically when the app goes to the background.
 - **Adjust time mid-game** — add or remove time for either player without stopping the game.
 - **Sounds** — distinct switch sounds for each player, plus pause, reset and flag-fall alerts, with a quick mute toggle right on the clock screen.
-- **Customizable theme color** — six accent colors for the clock buttons.
+- **Customizable theme color** — six accent colors applied live across the whole app.
+- **Light and dark themes** — follows your system's dark mode setting, with careful contrast in both.
+- **Adaptive app icon** — themed monochrome icon support on Android 13+, with light and dark variants.
 - **Keep-screen-on** — the display stays awake while a game is running.
 
 ## Screenshots

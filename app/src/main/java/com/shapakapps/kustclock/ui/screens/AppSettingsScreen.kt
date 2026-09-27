@@ -46,8 +46,7 @@ import com.shapakapps.kustclock.R
 import com.shapakapps.kustclock.model.TimeControlRepository
 import com.shapakapps.kustclock.storage.AppPreferences
 import com.shapakapps.kustclock.ui.theme.ClockThemeColors
-import com.shapakapps.kustclock.ui.theme.OnPrimaryDark
-import com.shapakapps.kustclock.ui.theme.TextSecondary
+import com.shapakapps.kustclock.ui.theme.OnAccent
 
 @Composable
 fun AppSettingsScreen(preferences: AppPreferences, onBack: () -> Unit) {
@@ -118,7 +117,7 @@ fun AppSettingsScreen(preferences: AppPreferences, onBack: () -> Unit) {
         Text(
             text = stringResource(R.string.version_footer),
             fontSize = 12.sp,
-            color = TextSecondary,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .fillMaxWidth()
@@ -157,7 +156,7 @@ private fun ColorSwatch(color: Color, selected: Boolean, onClick: () -> Unit) {
             Icon(
                 Icons.Default.Check,
                 contentDescription = null,
-                tint = OnPrimaryDark
+                tint = OnAccent
             )
         }
     }

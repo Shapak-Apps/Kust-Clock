@@ -49,7 +49,6 @@ import androidx.compose.ui.unit.sp
 import com.shapakapps.kustclock.R
 import com.shapakapps.kustclock.model.CustomTimeControl
 import com.shapakapps.kustclock.model.TimeControlRepository
-import com.shapakapps.kustclock.ui.theme.TextSecondary
 import com.shapakapps.kustclock.util.controlGlyph
 import com.shapakapps.kustclock.util.summarizeControl
 
@@ -116,7 +115,7 @@ fun TimeControlsScreen(
                 ) {
                     Text(
                         text = stringResource(R.string.empty_custom_list),
-                        color = TextSecondary,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center
                     )
                 }
@@ -226,7 +225,7 @@ private fun PresetCard(name: String, glyph: String, onClick: () -> Unit) {
         Text(
             text = name,
             fontSize = 11.sp,
-            color = TextSecondary,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
             maxLines = 2
         )
@@ -253,7 +252,7 @@ private fun CustomRow(
             Text(
                 text = summarizeControl(item.one),
                 fontSize = 12.sp,
-                color = TextSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1
             )
         }
