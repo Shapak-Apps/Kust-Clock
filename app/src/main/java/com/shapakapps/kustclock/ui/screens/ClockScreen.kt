@@ -19,7 +19,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
@@ -41,6 +40,8 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
@@ -59,6 +60,7 @@ import com.shapakapps.kustclock.engine.PlayerClock
 import com.shapakapps.kustclock.model.TimeControlRepository
 import com.shapakapps.kustclock.storage.AppPreferences
 import com.shapakapps.kustclock.ui.theme.ClockThemeColors
+import com.shapakapps.kustclock.util.Haptics
 import com.shapakapps.kustclock.util.formatClockTime
 
 @Composable
@@ -83,6 +85,7 @@ fun ClockScreen(
     }
 
     val view = LocalView.current
+    val appContext = LocalContext.current.applicationContext
     DisposableEffect(view) {
         view.keepScreenOn = true
         onDispose { view.keepScreenOn = false }
@@ -98,6 +101,9 @@ fun ClockScreen(
     }
 
     val themeColor = ClockThemeColors[preferences.themeColorIndex.coerceIn(0, ClockThemeColors.size - 1)]
+    fun buzz() {
+        Haptics.medium(appContext)
+    }
 
     Column(
         modifier = Modifier
@@ -112,19 +118,20 @@ fun ClockScreen(
             phase = engine.phase,
             isWinner = engine.winner == 1,
             themeColor = themeColor,
-            onTap = { engine.press(1) },
+            onTap = { buzz(); engine.press(1) },
             rotated = true,
             modifier = Modifier.weight(1f)
         )
         CenterBar(
             running = engine.phase == ClockPhase.RUNNING,
-            onReset = { showReset = true },
+            onReset = { buzz(); showReset = true },
             onTogglePause = {
+                buzz()
                 if (engine.phase == ClockPhase.RUNNING) engine.pause() else engine.resume()
             },
-            onAdjust = { showAdjust = true },
+            onAdjust = { buzz(); showAdjust = true },
             soundOn = preferences.soundEnabled,
-            onToggleSound = { preferences.soundEnabled = !preferences.soundEnabled }
+            onToggleSound = { buzz(); preferences.soundEnabled = !preferences.soundEnabled }
         )
         ClockPanel(
             clock = engine.playerOne,
@@ -132,7 +139,7 @@ fun ClockScreen(
             phase = engine.phase,
             isWinner = engine.winner == 0,
             themeColor = themeColor,
-            onTap = { engine.press(0) },
+            onTap = { buzz(); engine.press(0) },
             rotated = false,
             modifier = Modifier.weight(1f)
         )
@@ -282,7 +289,7 @@ private fun CenterBar(
             if (running) {
                 PauseIcon()
             } else {
-                Icon(Icons.Default.PlayArrow, contentDescription = stringResource(R.string.resume))
+                PlayIcon(contentDescription = stringResource(R.string.resume))
             }
         }
         IconButton(onClick = onAdjust) {
@@ -291,6 +298,26 @@ private fun CenterBar(
         IconButton(onClick = onToggleSound) {
             SoundIcon(on = soundOn)
         }
+    }
+}
+
+@Composable
+private fun PlayIcon(contentDescription: String?) {
+    val color = MaterialTheme.colorScheme.onSurface
+    Canvas(
+        modifier = Modifier
+            .size(width = 25.dp, height = 28.dp)
+            .semantics { this.contentDescription = contentDescription ?: "" }
+    ) {
+        val w = size.width
+        val h = size.height
+        val path = Path().apply {
+            moveTo(w * 0.18f, h * 0.06f)
+            lineTo(w * 0.88f, h * 0.5f)
+            lineTo(w * 0.18f, h * 0.94f)
+            close()
+        }
+        drawPath(path, color)
     }
 }
 

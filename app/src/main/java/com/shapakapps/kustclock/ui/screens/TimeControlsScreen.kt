@@ -93,7 +93,7 @@ fun TimeControlsScreen(
                 modifier = Modifier
                     .weight(1f)
                     .padding(horizontal = 12.dp),
-                contentPadding = PaddingValues(vertical = 12.dp),
+                contentPadding = PaddingValues(top = 0.dp, bottom = 12.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
@@ -124,6 +124,7 @@ fun TimeControlsScreen(
                     modifier = Modifier
                         .weight(1f)
                         .verticalScroll(rememberScrollState())
+                        .padding(bottom = 12.dp)
                 ) {
                     customList.forEach { item ->
                         CustomRow(
@@ -136,7 +137,11 @@ fun TimeControlsScreen(
                 }
             }
         }
-        Column(modifier = Modifier.navigationBarsPadding().padding(20.dp)) {
+        Column(
+            modifier = Modifier
+                .navigationBarsPadding()
+                .padding(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 20.dp)
+        ) {
             Button(
                 onClick = onNewCustom,
                 modifier = Modifier
@@ -185,7 +190,8 @@ private fun SegmentTabs(tab: Int, onSelect: (Int) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp),
+            .padding(horizontal = 20.dp)
+            .padding(top = 4.dp, bottom = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         labels.forEachIndexed { index, label ->
