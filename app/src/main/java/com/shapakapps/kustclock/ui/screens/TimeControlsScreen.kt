@@ -41,6 +41,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -63,6 +64,8 @@ fun TimeControlsScreen(
     var refresh by remember { mutableIntStateOf(0) }
     var deleteTarget by remember { mutableStateOf<CustomTimeControl?>(null) }
     val customList = remember(refresh) { TimeControlRepository.customControls() }
+    val context = LocalContext.current
+    val presets = remember(context.resources.configuration) { TimeControlRepository.localizedPresets(context) }
 
     Column(
         modifier = Modifier
@@ -97,7 +100,7 @@ fun TimeControlsScreen(
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                itemsIndexed(TimeControlRepository.presets) { index, preset ->
+                itemsIndexed(presets) { index, preset ->
                     PresetCard(
                         name = preset.name,
                         glyph = controlGlyph(preset),
@@ -245,6 +248,7 @@ private fun CustomRow(
     onEdit: () -> Unit,
     onDelete: () -> Unit
 ) {
+    val ctx = LocalContext.current
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -256,7 +260,7 @@ private fun CustomRow(
             Text(text = item.name, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
             Spacer(modifier = Modifier.height(2.dp))
             Text(
-                text = summarizeControl(item.one),
+                text = summarizeControl(ctx, item.one),
                 fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1

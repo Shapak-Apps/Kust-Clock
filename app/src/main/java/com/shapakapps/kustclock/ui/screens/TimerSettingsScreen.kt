@@ -111,7 +111,6 @@ private class PlayerDraft {
     }
 }
 
-
 @Composable
 fun TimerSettingsScreen(customId: Long?, onDone: () -> Unit) {
     val existing = remember(customId) { customId?.let { TimeControlRepository.findCustom(it) } }
@@ -257,7 +256,19 @@ private fun PlayerEditor(title: String, draft: PlayerDraft) {
                 FilterChip(
                     selected = draft.incrementType == type,
                     onClick = { draft.incrementType = type },
-                    label = { Text(type.label, fontSize = 12.sp) }
+                    label = {
+                        Text(
+                            stringResource(
+                                when (type) {
+                                    IncrementType.NONE -> R.string.increment_none
+                                    IncrementType.FISCHER -> R.string.increment_fischer
+                                    IncrementType.BRONSTEIN -> R.string.increment_bronstein
+                                    IncrementType.DELAY -> R.string.increment_delay
+                                }
+                            ),
+                            fontSize = 12.sp
+                        )
+                    }
                 )
             }
         }

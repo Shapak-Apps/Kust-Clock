@@ -1,5 +1,8 @@
 package com.shapakapps.kustclock.util
 
+import android.content.Context
+import com.shapakapps.kustclock.R
+import com.shapakapps.kustclock.model.IncrementType
 import com.shapakapps.kustclock.model.TimeControl
 import java.util.Locale
 
@@ -25,28 +28,54 @@ fun formatClockTime(millis: Long): String {
     }
 }
 
-fun durationText(millis: Long): String {
+fun durationText(context: Context, millis: Long): String {
+    val res = context.resources
     val hours = millis / 3_600_000
     val minutes = (millis % 3_600_000) / 60_000
     val seconds = (millis % 60_000) / 1_000
     return when {
-        hours > 0 && minutes > 0 -> "$hours hr $minutes min"
-        hours > 0 -> "$hours hr"
-        minutes > 0 -> "$minutes min"
-        else -> "$seconds sec"
+        hours > 0 && minutes > 0 -> res.getString(
+            R.string.duration_hr_min,
+            hours, res.getString(R.string.unit_hr),
+            minutes, res.getString(R.string.unit_min)
+        )
+        hours > 0 -> res.getString(R.string.duration_single, hours, res.getString(R.string.unit_hr))
+        minutes > 0 -> res.getString(R.string.duration_single, minutes, res.getString(R.string.unit_min))
+        else -> res.getString(R.string.duration_single, seconds, res.getString(R.string.unit_sec))
     }
 }
 
-fun summarizeControl(control: TimeControl): String {
+fun incrementLabel(context: Context, type: IncrementType): String {
+    val res = context.resources
+    return res.getString(
+        when (type) {
+            IncrementType.NONE -> R.string.increment_none
+            IncrementType.FISCHER -> R.string.increment_fischer
+            IncrementType.BRONSTEIN -> R.string.increment_bronstein
+            IncrementType.DELAY -> R.string.increment_delay
+        }
+    )
+}
+
+fun summarizeControl(context: Context, control: TimeControl): String {
+    val res = context.resources
     if (control.stages.size > 1) {
         val parts = control.stages.joinToString(" + ") { stage ->
-            if (stage.moves > 0) "${durationText(stage.durationMillis)} / ${stage.moves} moves"
-            else durationText(stage.durationMillis)
+            if (stage.moves > 0) res.getString(
+                R.string.summary_stage_moves,
+                durationText(context, stage.durationMillis),
+                stage.moves,
+                res.getString(R.string.unit_moves)
+            )
+            else durationText(context, stage.durationMillis)
         }
-        return "$parts · ${control.incrementType.label}"
+        return "$parts · ${incrementLabel(context, control.incrementType)}"
     }
-    val base = durationText(control.stages.first().durationMillis)
-    return if (control.incrementMillis > 0) "$base | ${control.incrementMillis / 1000} sec" else base
+    val base = durationText(context, control.stages.first().durationMillis)
+    return if (control.incrementMillis > 0) res.getString(
+        R.string.summary_increment,
+        base, control.incrementMillis / 1000, res.getString(R.string.unit_sec)
+    ) else base
 }
 
 fun controlGlyph(control: TimeControl): String {

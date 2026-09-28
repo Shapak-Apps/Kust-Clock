@@ -24,7 +24,7 @@ sealed interface AppScreen {
 }
 
 @Composable
-fun KustClockApp() {
+fun KustClockApp(onLanguageChange: () -> Unit = {}) {
     val context = LocalContext.current
     val preferences = remember { AppPreferences(context) }
     val soundManager = remember { SoundManager(context) }
@@ -52,7 +52,8 @@ fun KustClockApp() {
                 )
                 AppScreen.AppSettings -> AppSettingsScreen(
                     preferences = preferences,
-                    onBack = { backStack.removeAt(backStack.size - 1) }
+                    onBack = { backStack.removeAt(backStack.size - 1) },
+                    onLanguageChange = onLanguageChange
                 )
                 is AppScreen.TimerSettings -> TimerSettingsScreen(
                     customId = screen.customId,

@@ -13,14 +13,29 @@ android {
         applicationId = "com.shapakapps.kustclock"
         minSdk = 24
         targetSdk = 37
-        versionCode = 1
-        versionName = "1.1"
+        versionCode = 2
+        versionName = "2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+         ndk {
+            abiFilters.add("arm64-v8a")
+        }
+    }
+
+     signingConfigs {
+        create("release") {
+            storeFile = file("../kustclock-upload.jks")
+            storePassword = "merdan1201"
+            keyAlias = "kustclock"
+            keyPassword = "merdan1201"
+        }
     }
 
     buildTypes {
         release {
+            signingConfig = signingConfigs.getByName("release")
+
             optimization {
                 enable = false
             }

@@ -1,0 +1,1 @@
+git -c http.proxy=socks5h://127.0.0.1:10808 push --tags origin dev

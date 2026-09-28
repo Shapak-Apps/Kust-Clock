@@ -1,10 +1,10 @@
 package com.shapakapps.kustclock.model
 
-enum class IncrementType(val label: String) {
-    NONE("None"),
-    FISCHER("Fischer"),
-    BRONSTEIN("Bronstein"),
-    DELAY("Delay")
+enum class IncrementType {
+    NONE,
+    FISCHER,
+    BRONSTEIN,
+    DELAY
 }
 
 data class Stage(
