@@ -15,3 +15,6 @@
 local.properties
 examples/
 .kotlin/
+
+pepk.jar
+kustclock-upload.jks

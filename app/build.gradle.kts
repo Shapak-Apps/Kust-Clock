@@ -23,6 +23,15 @@ android {
         }
     }
 
+     signingConfigs {
+        create("release") {
+            storeFile = file("../kustclock-upload.jks")
+            storePassword = "merdan1201"
+            keyAlias = "kustclock"
+            keyPassword = "merdan1201"
+        }
+    }
+
     buildTypes {
         release {
             optimization {
