@@ -19,7 +19,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
@@ -41,6 +40,8 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
@@ -282,7 +283,7 @@ private fun CenterBar(
             if (running) {
                 PauseIcon()
             } else {
-                Icon(Icons.Default.PlayArrow, contentDescription = stringResource(R.string.resume))
+                PlayIcon(contentDescription = stringResource(R.string.resume))
             }
         }
         IconButton(onClick = onAdjust) {
@@ -291,6 +292,27 @@ private fun CenterBar(
         IconButton(onClick = onToggleSound) {
             SoundIcon(on = soundOn)
         }
+    }
+}
+
+@Composable
+private fun PlayIcon(contentDescription: String?) {
+    val color = MaterialTheme.colorScheme.onSurface
+    Canvas(
+        modifier = Modifier
+            .size(width = 25.dp, height = 28.dp)
+            .semantics { this.contentDescription = contentDescription ?: "" }
+    ) {
+        val w = size.width
+        val h = size.height
+        // Filled triangle optically matched to PauseIcon (two 10dp bars + 5dp gap = 25dp wide, 28dp tall).
+        val path = Path().apply {
+            moveTo(w * 0.18f, h * 0.06f)
+            lineTo(w * 0.88f, h * 0.5f)
+            lineTo(w * 0.18f, h * 0.94f)
+            close()
+        }
+        drawPath(path, color)
     }
 }
 
