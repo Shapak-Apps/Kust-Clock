@@ -60,6 +60,7 @@ import com.shapakapps.kustclock.engine.PlayerClock
 import com.shapakapps.kustclock.model.TimeControlRepository
 import com.shapakapps.kustclock.storage.AppPreferences
 import com.shapakapps.kustclock.ui.theme.ClockThemeColors
+import com.shapakapps.kustclock.util.Haptics
 import com.shapakapps.kustclock.util.formatClockTime
 
 @Composable
@@ -84,6 +85,7 @@ fun ClockScreen(
     }
 
     val view = LocalView.current
+    val appContext = LocalContext.current.applicationContext
     DisposableEffect(view) {
         view.keepScreenOn = true
         onDispose { view.keepScreenOn = false }
@@ -99,6 +101,9 @@ fun ClockScreen(
     }
 
     val themeColor = ClockThemeColors[preferences.themeColorIndex.coerceIn(0, ClockThemeColors.size - 1)]
+    fun buzz() {
+        Haptics.medium(appContext)
+    }
 
     Column(
         modifier = Modifier
@@ -113,19 +118,20 @@ fun ClockScreen(
             phase = engine.phase,
             isWinner = engine.winner == 1,
             themeColor = themeColor,
-            onTap = { engine.press(1) },
+            onTap = { buzz(); engine.press(1) },
             rotated = true,
             modifier = Modifier.weight(1f)
         )
         CenterBar(
             running = engine.phase == ClockPhase.RUNNING,
-            onReset = { showReset = true },
+            onReset = { buzz(); showReset = true },
             onTogglePause = {
+                buzz()
                 if (engine.phase == ClockPhase.RUNNING) engine.pause() else engine.resume()
             },
-            onAdjust = { showAdjust = true },
+            onAdjust = { buzz(); showAdjust = true },
             soundOn = preferences.soundEnabled,
-            onToggleSound = { preferences.soundEnabled = !preferences.soundEnabled }
+            onToggleSound = { buzz(); preferences.soundEnabled = !preferences.soundEnabled }
         )
         ClockPanel(
             clock = engine.playerOne,
@@ -133,7 +139,7 @@ fun ClockScreen(
             phase = engine.phase,
             isWinner = engine.winner == 0,
             themeColor = themeColor,
-            onTap = { engine.press(0) },
+            onTap = { buzz(); engine.press(0) },
             rotated = false,
             modifier = Modifier.weight(1f)
         )
@@ -305,7 +311,6 @@ private fun PlayIcon(contentDescription: String?) {
     ) {
         val w = size.width
         val h = size.height
-        // Filled triangle optically matched to PauseIcon (two 10dp bars + 5dp gap = 25dp wide, 28dp tall).
         val path = Path().apply {
             moveTo(w * 0.18f, h * 0.06f)
             lineTo(w * 0.88f, h * 0.5f)
