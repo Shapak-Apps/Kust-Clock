@@ -49,8 +49,13 @@ import com.shapakapps.kustclock.ui.theme.ClockThemeColors
 import com.shapakapps.kustclock.ui.theme.OnAccent
 
 @Composable
-fun AppSettingsScreen(preferences: AppPreferences, onBack: () -> Unit) {
+fun AppSettingsScreen(
+    preferences: AppPreferences,
+    onBack: () -> Unit,
+    onLanguageChange: () -> Unit = {}
+) {
     var showRestore by remember { mutableStateOf(false) }
+    var showLangDialog by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -99,6 +104,27 @@ fun AppSettingsScreen(preferences: AppPreferences, onBack: () -> Unit) {
                 }
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(R.string.language),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Text(
+                        text = when (preferences.language) {
+                            "en" -> stringResource(R.string.language_english)
+                            "ru" -> stringResource(R.string.language_russian)
+                            else -> stringResource(R.string.language_system)
+                        },
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                OutlinedButton(onClick = { showLangDialog = true }) {
+                    Text(stringResource(R.string.language))
+                }
+            }
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = stringResource(R.string.sound),
                     style = MaterialTheme.typography.titleMedium,
@@ -142,6 +168,57 @@ fun AppSettingsScreen(preferences: AppPreferences, onBack: () -> Unit) {
             },
             dismissButton = {
                 TextButton(onClick = { showRestore = false }) { Text(stringResource(R.string.action_cancel)) }
+            }
+        )
+    }
+
+    if (showLangDialog) {
+        AlertDialog(
+            onDismissRequest = { showLangDialog = false },
+            title = { Text(stringResource(R.string.language)) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    val options = listOf(
+                        "system" to stringResource(R.string.language_system),
+                        "en" to stringResource(R.string.language_english),
+                        "ru" to stringResource(R.string.language_russian),
+                    )
+                    options.forEach { (value, label) ->
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    if (preferences.language != value) {
+                                        preferences.language = value
+                                        showLangDialog = false
+                                        onLanguageChange()
+                                    } else {
+                                        showLangDialog = false
+                                    }
+                                }
+                                .padding(vertical = 10.dp)
+                        ) {
+                            Text(
+                                text = label,
+                                modifier = Modifier.weight(1f),
+                                fontWeight = if (preferences.language == value) FontWeight.Bold else FontWeight.Normal
+                            )
+                            if (preferences.language == value) {
+                                Icon(Icons.Default.Check, contentDescription = null)
+                            }
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = stringResource(R.string.language_system_desc),
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { showLangDialog = false }) { Text(stringResource(R.string.action_ok)) }
             }
         )
     }

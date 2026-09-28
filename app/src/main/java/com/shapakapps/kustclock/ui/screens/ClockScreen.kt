@@ -69,7 +69,10 @@ fun ClockScreen(
     preferences: AppPreferences,
     soundManager: SoundManager
 ) {
-    val setup = remember(controlId) { TimeControlRepository.pairById(controlId) }
+    val context = LocalContext.current
+    val setup = remember(controlId, context.resources.configuration) {
+        TimeControlRepository.pairByIdLocalized(context, controlId)
+    }
     if (setup == null) return
     val engine = remember(controlId) {
         ClockEngine(setup.first, setup.second) { sound ->

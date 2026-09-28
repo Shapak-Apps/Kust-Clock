@@ -9,6 +9,11 @@
     <string name="action_back">Back</string>
     <string name="theme_color">Theme color</string>
     <string name="sound">Sound</string>
+    <string name="language">Language</string>
+    <string name="language_system">System default</string>
+    <string name="language_english">English</string>
+    <string name="language_russian">Русский</string>
+    <string name="language_system_desc">Follow device language (Russian → Russian, otherwise English)</string>
     <string name="restore_defaults">Restore Default Time Controls</string>
     <string name="restore_defaults_confirm">Are you sure? This will delete any custom time controls you have.</string>
     <string name="action_confirm">Confirm</string>
@@ -36,6 +41,10 @@
     <string name="same_as_player_one">Same as Player One</string>
     <string name="advanced_mode">Advanced mode (stages)</string>
     <string name="stage">Stage %1$d</string>
+    <string name="increment_none">None</string>
+    <string name="increment_fischer">Fischer</string>
+    <string name="increment_bronstein">Bronstein</string>
+    <string name="increment_delay">Delay</string>
     <string name="increment_none_desc">No extra time is added after each move.</string>
     <string name="increment_fischer_desc">Players receive the full increment at the end of each turn.</string>
     <string name="increment_bronstein_desc">Players receive the used portion of the increment at the end of each turn.</string>
@@ -50,5 +59,15 @@
     <string name="resume">Resume</string>
     <string name="winner">WINNER</string>
     <string name="time_up">TIME IS UP</string>
+    <string name="preset_tournament">Tournament</string>
+    <string name="unit_hr">hr</string>
+    <string name="unit_min">min</string>
+    <string name="unit_sec">sec</string>
+    <string name="unit_moves">moves</string>
+    <string name="duration_hr_min">%1$d %2$s %3$d %4$s</string>
+    <string name="duration_single">%1$d %2$s</string>
+    <string name="summary_stage_moves">%1$s / %2$d %3$s</string>
+    <string name="summary_increment">%1$s | %2$d %3$s</string>
     <string name="version_footer">Kust Clock · Version 1.0</string>
 </resources>
+
