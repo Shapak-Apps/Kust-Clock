@@ -12,9 +12,6 @@ import com.shapakapps.kustclock.util.LocaleHelper
 class MainActivity : ComponentActivity() {
 
     override fun attachBaseContext(newBase: Context) {
-        // Apply saved language BEFORE onCreate so resources inflate correctly.
-        // No AppCompat needed — pure Compose + Context wrapper.
-        // "system" = auto: Russian device -> Russian, otherwise English.
         val tmpPrefs = newBase.getSharedPreferences("kust_clock_preferences", MODE_PRIVATE)
         val mode = tmpPrefs.getString("app_language", LocaleHelper.LANG_SYSTEM)
             ?: LocaleHelper.LANG_SYSTEM

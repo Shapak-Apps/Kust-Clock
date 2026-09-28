@@ -31,7 +31,6 @@ object TimeControlRepository {
         )
     }
 
-    // Fallback for non-UI callers (ids still positional: 0..13).
     val presets: List<TimeControl> = listOf(
         TimeControl("1 min", listOf(Stage(0, 60_000)), IncrementType.FISCHER, 0),
         TimeControl("1 min | 1 sec", listOf(Stage(0, 60_000)), IncrementType.FISCHER, 1_000),

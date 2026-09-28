@@ -16,22 +16,18 @@ object LocaleHelper {
             LANG_EN -> Locale("en")
             LANG_RU -> Locale("ru")
             else -> {
-                // Auto: Russian device -> Russian, everything else -> English
                 if (deviceLocale.language == "ru") Locale("ru") else Locale("en")
             }
         }
     }
 
     fun wrap(base: Context, langMode: String): Context {
-        // IMPORTANT: capture device locale BEFORE setDefault, otherwise
-        // "system/auto" mode would read back the previously forced locale.
         val deviceLocale: Locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             base.resources.configuration.locales.get(0)
         } else {
             @Suppress("DEPRECATION") base.resources.configuration.locale
         }
         val locale = resolveLocale(langMode, deviceLocale)
-        // Persist as default so String.format etc. behave consistently
         locale?.let { Locale.setDefault(it) }
         val config = Configuration(base.resources.configuration)
         if (locale != null) {

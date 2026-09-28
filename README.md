@@ -2,9 +2,12 @@
 
 Kust Clock is a free and open-source chess clock for Android, designed for real-life, face-to-face board games. Whether you are playing blitz at a café or a long tournament game at home, put a phone between the two players and you have a fully featured game timer.
 
+Current version: **2.0** (`versionCode 2`).
+
 ## Features
 
 - **Ready-to-use presets** — one-tap access to the most common time controls: 1|0, 1|1, 2|1, 3|0, 3|2, 5|0, 5|3, 10|0, 10|5, 15|10, 30|0, 30|20, 60|30 and a multi-stage tournament control (2 hr for 40 moves + 1 hr).
+- **English + Russian, with auto-detect** — the app follows the device language out of the box (Russian device → Russian, everything else → English). Override anytime in App Settings → Language (System default / English / Русский).
 - **Custom time controls** — create your own controls with a name, base time (hours/minutes/seconds) and increment:
   - **Fischer** — players receive the full increment at the end of each turn.
   - **Bronstein** — players receive the used portion of the increment at the end of each turn.
@@ -56,10 +59,10 @@ app/src/main/java/com/shapakapps/kustclock/
 ├── model/                   # Time controls, presets and repository
 ├── storage/                 # Persistence (custom controls + app preferences)
 ├── ui/                      # Navigation shell and Compose screens
-└── util/                    # Time formatting helpers
+└── util/                    # Time formatting, locale and haptics helpers
 ```
 
-The UI is built entirely with **Jetpack Compose** and **Material 3**. There are no third-party dependencies.
+The UI is built entirely with **Jetpack Compose** and **Material 3**. There are no third-party dependencies. Strings live in `app/src/main/res/values/strings.xml` (English) and `app/src/main/res/values-ru/strings.xml` (Russian); per-app language is handled by `util/LocaleHelper` + `MainActivity.attachBaseContext()` with a user override stored in `AppPreferences.language`.
 
 ## Sounds
 
@@ -80,8 +83,12 @@ The bundled files are simple placeholder tones. To personalize the app, replace 
 - [ ] Landscape layout
 - [ ] Move history and PGN-style export
 - [ ] More sound packs
-- [ ] Translations
+- [x] Translations (English + Russian shipped in v2.0)
 - [ ] Wear OS companion
+
+## Changelog
+
+- **2.0** — Russian language support with device-language auto-detect and a manual Language setting; all UI strings, presets and summaries localized.
 
 ## Contributing
 

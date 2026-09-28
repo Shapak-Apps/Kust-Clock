@@ -111,7 +111,6 @@ private class PlayerDraft {
     }
 }
 
-
 @Composable
 fun TimerSettingsScreen(customId: Long?, onDone: () -> Unit) {
     val existing = remember(customId) { customId?.let { TimeControlRepository.findCustom(it) } }

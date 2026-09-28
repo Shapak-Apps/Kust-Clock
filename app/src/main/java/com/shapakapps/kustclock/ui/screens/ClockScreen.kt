@@ -267,7 +267,6 @@ private fun ClockPanel(
     }
 }
 
-
 @Composable
 private fun CenterBar(
     running: Boolean,
